@@ -8,25 +8,19 @@ namespace WavSplitter
 {
     class Program
     {
-        static void Usage()
-        {
-            Console.WriteLine("<fileIn> <duration>");
-        }
+        /// <summary>
+        /// command line example:
+        /// <example>WavSplitter --source 3Notes.wav --duration 00:00:02 --output note</example>
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-            if (args.Length < 2)
+            var cmdOptions = new CmdOptions();
+            if (CommandLine.Parser.Default.ParseArgumentsStrict(args, cmdOptions))
             {
-                Usage();
-                return;
+                WaveUtils.SplitWave(cmdOptions.Source, cmdOptions.Duration ?? new TimeSpan(), cmdOptions.Output);
+                Console.WriteLine("Done.");
             }
-            var fileIn = args[0];
-            TimeSpan duration;
-            if (!TimeSpan.TryParse(args[1], out duration))
-            {
-                Usage();
-                return;
-            }
-            WaveUtils.SplitWave(fileIn, duration, "note");
         }
     }
 }
