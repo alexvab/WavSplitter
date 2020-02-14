@@ -66,6 +66,7 @@ namespace WavSplitter
             var buffer = new byte[reader.BlockAlign * 1024];
             while (reader.Position < endPos)
             {
+                endPos = Math.Min(endPos, reader.Length);
                 long bytesRequired = endPos - reader.Position;
                 if (bytesRequired > 0)
                 {
